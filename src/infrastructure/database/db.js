@@ -9,6 +9,12 @@ const sequelize = new Sequelize({
   host: process.env.DATABASE_HOST,
   port: process.env.DATABASE_PORT,
   database: process.env.DATABASE_NAME,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // Necesario para conexiones SSL en Heroku
+    },
+  },
   logging: false, // Desactiva los logs de Sequelize (opcional)
 });
 
