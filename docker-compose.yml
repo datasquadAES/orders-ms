@@ -1,0 +1,52 @@
+services:
+
+  postgres-orders-db:
+    image: postgres:15
+    container_name: postgres-orders-ms
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: orders_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - pickhealthy-net
+
+
+  orders-ms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_HOST=postgres-orders-db
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=orders_db
+      - QUEUE_DB_HOST=postgres-commons-db
+      - QUEUE_DB_PORT=5432
+      - QUEUE_DB_USER=postgres
+      - QUEUE_DB_PASSWORD=postgres
+      - QUEUE_DB_NAME=commons
+    depends_on:
+      - postgres-orders-db
+    networks:
+      - pickhealthy-net
+
+volumes:
+  postgres_data:
+
+networks:
+  pickhealthy-net:
+    external: true
+
+# Para reiniciar el volumen de postgres
+# docker-compose down
+# docker volume rm orders-ms_postgres_data
+# docker-compose up --build
