@@ -24,7 +24,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 async function iniciarServidor() {
   try {
     // Probar la conexión a la base de datos
-    await probarConexion();
+    //await probarConexion();
 
     // Iniciar el servidor si la conexión es exitosa
     const PORT = process.env.PORT || 3000;
