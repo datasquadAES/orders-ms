@@ -12,6 +12,8 @@ const queueConfig = {
   schema: 'ph_queue'  
 };
 
+console.log('----',queueConfig);
+
 // Instancia única de QueueManager
 const queueManager = new QueueManager(queueConfig);
 
